@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Taitans.YarpManagement</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.MongoDB" Version="5.0.0-rc.1" />
+    <ProjectReference Include="..\Taitans.YarpManagement.Domain\Taitans.YarpManagement.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,7 @@
+{
+  "modules": {
+    "Taitans.YarpManagement": {
+      "path": "Taitans.YarpManagement.abpmdl.json"
+    }
+  }
+}

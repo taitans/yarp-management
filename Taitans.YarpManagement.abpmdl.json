@@ -1,0 +1,79 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {},
+      "host": {}
+    }
+  },
+  "packages": {
+    "Taitans.YarpManagement.Domain.Shared": {
+      "path": "src/Taitans.YarpManagement.Domain.Shared/Taitans.YarpManagement.Domain.Shared.abppkg.json",
+      "folder": "src"
+    },
+    "Taitans.YarpManagement.Domain": {
+      "path": "src/Taitans.YarpManagement.Domain/Taitans.YarpManagement.Domain.abppkg.json",
+      "folder": "src"
+    },
+    "Taitans.YarpManagement.Application.Contracts": {
+      "path": "src/Taitans.YarpManagement.Application.Contracts/Taitans.YarpManagement.Application.Contracts.abppkg.json",
+      "folder": "src"
+    },
+    "Taitans.YarpManagement.Application": {
+      "path": "src/Taitans.YarpManagement.Application/Taitans.YarpManagement.Application.abppkg.json",
+      "folder": "src"
+    },
+    "Taitans.YarpManagement.EntityFrameworkCore": {
+      "path": "src/Taitans.YarpManagement.EntityFrameworkCore/Taitans.YarpManagement.EntityFrameworkCore.abppkg.json",
+      "folder": "src"
+    },
+    "Taitans.YarpManagement.MongoDB": {
+      "path": "src/Taitans.YarpManagement.MongoDB/Taitans.YarpManagement.MongoDB.abppkg.json",
+      "folder": "src"
+    },
+    "Taitans.YarpManagement.HttpApi": {
+      "path": "src/Taitans.YarpManagement.HttpApi/Taitans.YarpManagement.HttpApi.abppkg.json",
+      "folder": "src"
+    },
+    "Taitans.YarpManagement.HttpApi.Client": {
+      "path": "src/Taitans.YarpManagement.HttpApi.Client/Taitans.YarpManagement.HttpApi.Client.abppkg.json",
+      "folder": "src"
+    },
+    "Taitans.YarpManagement.TestBase": {
+      "path": "test/Taitans.YarpManagement.TestBase/Taitans.YarpManagement.TestBase.abppkg.json",
+      "folder": "test"
+    },
+    "Taitans.YarpManagement.EntityFrameworkCore.Tests": {
+      "path": "test/Taitans.YarpManagement.EntityFrameworkCore.Tests/Taitans.YarpManagement.EntityFrameworkCore.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "Taitans.YarpManagement.MongoDB.Tests": {
+      "path": "test/Taitans.YarpManagement.MongoDB.Tests/Taitans.YarpManagement.MongoDB.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "Taitans.YarpManagement.Domain.Tests": {
+      "path": "test/Taitans.YarpManagement.Domain.Tests/Taitans.YarpManagement.Domain.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "Taitans.YarpManagement.Application.Tests": {
+      "path": "test/Taitans.YarpManagement.Application.Tests/Taitans.YarpManagement.Application.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "Taitans.YarpManagement.HttpApi.Host": {
+      "path": "host/Taitans.YarpManagement.HttpApi.Host/Taitans.YarpManagement.HttpApi.Host.abppkg.json",
+      "folder": "host"
+    },
+    "Taitans.YarpManagement.HttpApi.Client.ConsoleTestApp": {
+      "path": "test/Taitans.YarpManagement.HttpApi.Client.ConsoleTestApp/Taitans.YarpManagement.HttpApi.Client.ConsoleTestApp.abppkg.json",
+      "folder": "test"
+    },
+    "Taitans.YarpManagement.IdentityServer": {
+      "path": "host/Taitans.YarpManagement.IdentityServer/Taitans.YarpManagement.IdentityServer.abppkg.json",
+      "folder": "host"
+    },
+    "Taitans.YarpManagement.Host.Shared": {
+      "path": "host/Taitans.YarpManagement.Host.Shared/Taitans.YarpManagement.Host.Shared.abppkg.json",
+      "folder": "host"
+    }
+  }
+}
