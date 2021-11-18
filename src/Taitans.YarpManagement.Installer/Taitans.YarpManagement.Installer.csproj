@@ -1,22 +1,24 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <Import Project="..\..\configureawait.props" />
-    <Import Project="..\..\common.props" />
+  <Import Project="..\..\configureawait.props" />
+  <Import Project="..\..\common.props" />
 
-    <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
-        <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
-        <RootNamespace />
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+    <RootNamespace />
+    <PackageIcon>8080.png</PackageIcon>
+    <PackageIconUrl />
+  </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Volo.Abp.Studio.ModuleInstaller" Version="5.0.0-rc.1" />
-        <PackageReference Include="Volo.Abp.VirtualFileSystem" Version="5.0.0-rc.1" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Studio.ModuleInstaller" Version="5.0.0-rc.1" />
+    <PackageReference Include="Volo.Abp.VirtualFileSystem" Version="5.0.0-rc.1" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <None Remove="..\..\Taitans.YarpManagement.abpmdl.json" />
-      <EmbeddedResource Include="..\..\Taitans.YarpManagement.abpmdl.json" />
-    </ItemGroup>
+  <ItemGroup>
+    <None Remove="..\..\Taitans.YarpManagement.abpmdl.json" />
+    <EmbeddedResource Include="..\..\Taitans.YarpManagement.abpmdl.json" />
+  </ItemGroup>
 
 </Project>
