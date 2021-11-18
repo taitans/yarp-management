@@ -4,11 +4,11 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>Taitans.YarpManagement</RootNamespace>
+    <RootNamespace />
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(MicrosoftNETTestSdkPackageVersion)" />
     <ProjectReference Include="..\Taitans.YarpManagement.EntityFrameworkCore.Tests\Taitans.YarpManagement.EntityFrameworkCore.Tests.csproj" />
   </ItemGroup>
 
