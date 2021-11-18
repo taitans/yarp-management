@@ -14,9 +14,7 @@ namespace Taitans.YarpManagement.MongoDB
         {
             context.Services.AddMongoDbContext<YarpManagementMongoDbContext>(options =>
             {
-                /* Add custom repositories here. Example:
-                 * options.AddRepository<Question, MongoQuestionRepository>();
-                 */
+                options.AddRepository<ProxyConfig, MongoProxyConfigRepository>();
             });
         }
     }
