@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>Taitans.YarpManagement</RootNamespace>
+    <RootNamespace />
   </PropertyGroup>
 
   <ItemGroup>
