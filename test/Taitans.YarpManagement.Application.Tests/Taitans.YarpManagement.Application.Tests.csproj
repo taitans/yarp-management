@@ -10,7 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Taitans.YarpManagement.Application\Taitans.YarpManagement.Application.csproj" />
     <ProjectReference Include="..\Taitans.YarpManagement.Domain.Tests\Taitans.YarpManagement.Domain.Tests.csproj" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(MicrosoftNETTestSdkPackageVersion)" />
   </ItemGroup>
 
 </Project>
