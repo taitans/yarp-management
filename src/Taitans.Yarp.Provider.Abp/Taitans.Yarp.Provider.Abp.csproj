@@ -1,4 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  
+  <Import Project="..\..\common.props" />
+  
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -6,6 +9,7 @@
     <RootNamespace />
     <PackageIcon>8080.png</PackageIcon>
     <PackageIconUrl />
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
