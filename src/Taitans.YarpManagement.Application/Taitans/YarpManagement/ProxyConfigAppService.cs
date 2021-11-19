@@ -49,8 +49,11 @@ namespace Taitans.YarpManagement
             {
                 return;
             }
+            else if (config != null)
+            { 
+                await ProxyConfigRepository.DeleteAsync(config);
+            }
 
-            await ProxyConfigRepository.DeleteAsync(config);
             long count = 0;
             using (DataFilter.Disable<ISoftDelete>())
             {
