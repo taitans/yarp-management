@@ -13,30 +13,41 @@ namespace Taitans.YarpManagement
         private readonly IProxyConfigProvider _proxyConfigProvider;
         private readonly IUpdateConfig _updateConfig;
         private readonly ILogger<UpdateConfigurationEventHandler> _logger;
+        private readonly ProxyConfigOptions _options;
 
         public UpdateConfigurationEventHandler(IProxyConfigProvider proxyConfigProvider,
             IUpdateConfig updateConfig,
-            ILogger<UpdateConfigurationEventHandler> logger)
+            ILogger<UpdateConfigurationEventHandler> logger,
+            ProxyConfigOptions options)
         {
             _proxyConfigProvider = proxyConfigProvider;
             _updateConfig = updateConfig;
             _logger = logger;
+            _options = options;
         }
 
         public Task HandleEventAsync(UpdateConfigurationEventData eventData)
         {
-            var config = JsonSerializer.Deserialize<GatewayConfig>(eventData.Value);
+            if (_options.Name == eventData.Name)
+            {
+                try
+                {
+                    var config = JsonSerializer.Deserialize<GatewayConfig>(eventData.Value);
 
-            if (config != null)
-            {
-                //_updateConfig.GetConfig();
-                _updateConfig.Update(config.Routes, config.Clusters);
-                _logger.LogInformation($"gateway name: {eventData.Name} reload sucess.");
-            }
-            else
-            {
-                _logger.LogError($"gateway name: {eventData.Name} reload fail. value:{eventData.Value}");
-            }
+                    if (config == null)
+                    {
+                        throw new ArgumentNullException(nameof(config));
+                    }
+
+                    _updateConfig.Update(config.Routes, config.Clusters);
+
+                    _logger.LogInformation($"gateway name: {eventData.Name} reload sucess.");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, $"gateway name: {eventData.Name} reload fail. value:{eventData.Value}");
+                }
+            } 
 
             return Task.CompletedTask;
         }
