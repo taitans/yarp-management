@@ -1,7 +1,28 @@
 {
   "culture": "en",
   "texts": {
-    "MyAccount":  "My account",
-    "SamplePageMessage": "A sample page for the YarpManagement module"
+    "Name": "Name",
+    "Version": "Version",
+    "Value": "Value",
+    "Reload": "Reload",
+    "NewProxyConfig": "New proxy config",
+    "History": "History",
+    "RollBackToVersion": "RollBack to version",
+    "DisplayName:CreateTime": "Create time",
+    "DisplayName:IsCurrent": "Current version",
+    "DisplayName:RollBackSuccessfully": "RollBack successfully",
+    "ViewChangeHistory": "View change history",
+    "ProxyConfigDeletionConfirmationMessage": "Are you sure to delete the proxy config '{0}'?",
+    "ProxyConfigReloadConfirmationMessage": "Are you sure to reload the proxy config '{0}' to gateway?",
+    "ProxyConfigRollBackConfirmationMessage": "Are you sure to rollback the version '{0}'?",
+    "Menu:YarpManagement": "Yarp management",
+    "Permission:YarpManagement": "Yarp management",
+    "Permission:ProxyConfigs": "Proxy Configs",
+    "Permission:Create": "Create",
+    "Permission:Edit": "Edit",
+    "Permission:Delete": "Delete",
+    "Permission:Reload": "Reload",
+    "Permission:RollBack": "RollBack",
+    "Permission:ViewChangeHistory": "View change history"
   }
 }

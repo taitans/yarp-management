@@ -1,6 +1,28 @@
 {
   "culture": "zh-Hant",
   "texts": {
-    "MyAccount":  "我的賬戶" 
+    "Name": "名稱",
+    "Version": "版本",
+    "Value": "值",
+    "Reload": "重載",
+    "NewProxyConfig": "新代理",
+    "History": "記錄",
+    "RollBackToVersion": "回滾此版本",
+    "DisplayName:CreateTime": "創建時間",
+    "DisplayName:IsCurrent": "當前版本",
+    "DisplayName:RollBackSuccessfully": "成功回滾",
+    "ViewChangeHistory": "查看變更記錄",
+    "ProxyConfigDeletionConfirmationMessage": "配置「{0}」將被刪除. 你確認了嗎?",
+    "ProxyConfigReloadConfirmationMessage": "配置「{0}」將更新到網關. 你確認了嗎?",
+    "ProxyConfigRollBackConfirmationMessage": "將回滾至「{0}」版本. 你確認了嗎?",
+    "Menu:YarpManagement": "Yarp管理",
+    "Permission:YarpManagement": "Yarp管理",
+    "Permission:ProxyConfigs": "代理配置",
+    "Permission:Create": "創建",
+    "Permission:Edit": "編輯",
+    "Permission:Delete": "刪除",
+    "Permission:Reload": "重載",
+    "Permission:RollBack": "回滾",
+    "Permission:ViewChangeHistory": "查看變更記錄"
   }
 }

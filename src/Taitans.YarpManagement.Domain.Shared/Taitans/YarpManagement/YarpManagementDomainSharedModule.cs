@@ -25,12 +25,12 @@ namespace Taitans.YarpManagement
                 options.Resources
                     .Add<YarpManagementResource>("en")
                     .AddBaseTypes(typeof(AbpValidationResource))
-                    .AddVirtualJson("/Localization/YarpManagement");
+                    .AddVirtualJson("/Taitans/YarpManagement/Localization/YarpManagement");
             });
 
             Configure<AbpExceptionLocalizationOptions>(options =>
             {
-                options.MapCodeNamespace("YarpManagement", typeof(YarpManagementResource));
+                options.MapCodeNamespace("Taitans.YarpManagement", typeof(YarpManagementResource));
             });
         }
     }

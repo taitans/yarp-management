@@ -1,7 +1,28 @@
 {
   "culture": "zh-Hans",
   "texts": {
-    "MyAccount": "我的账户",
-    "SamplePageMessage": "YarpManagement模块的示例页面"
+    "Name": "名称",
+    "Version": "版本",
+    "Value": "值",
+    "Reload": "重载",
+    "NewProxyConfig": "新代理",
+    "History": "记录",
+    "RollBackToVersion": "回滚此版本",
+    "DisplayName:CreateTime": "创建时间",
+    "DisplayName:IsCurrent": "当前版本",
+    "DisplayName:RollBackSuccessfully": "成功回滚",
+    "ViewChangeHistory": "查看变更记录",
+    "ProxyConfigDeletionConfirmationMessage": "配置“{0}”将被删除. 你确认了吗?",
+    "ProxyConfigReloadConfirmationMessage": "配置“{0}”将更新到网关. 你确认了吗?",
+    "ProxyConfigRollBackConfirmationMessage": "将回滚至“{0}”版本. 你确认了吗?",
+    "Menu:YarpManagement": "Yarp管理",
+    "Permission:YarpManagement": "Yarp管理",
+    "Permission:ProxyConfigs": "代理配置",
+    "Permission:Create": "创建",
+    "Permission:Edit": "编辑",
+    "Permission:Delete": "删除",
+    "Permission:Reload": "重载",
+    "Permission:RollBack": "回滚",
+    "Permission:ViewChangeHistory": "查看变更记录"
   }
 }
