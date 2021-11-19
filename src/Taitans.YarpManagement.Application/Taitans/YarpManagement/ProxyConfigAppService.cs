@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 using Taitans.YarpManagement.Dtos;
+using Taitans.YarpManagement.Permissions;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
-using Volo.Abp.Data;
 using Volo.Abp.EventBus.Distributed;
 
 namespace Taitans.YarpManagement
 {
-    [Authorize]
+    [Authorize(YarpManagementPermissions.ProxyConfigs.Default)]
     public class ProxyConfigAppService : YarpManagementAppServiceBase, IProxyConfigAppService
     {
         protected IProxyConfigRepository ProxyConfigRepository;
@@ -34,14 +34,23 @@ namespace Taitans.YarpManagement
                 ObjectMapper.Map<List<ProxyConfig>, List<ProxyConfigDto>>(list));
         }
 
+        public virtual async Task<ProxyConfigDto> GetAsync(Guid id)
+        {
+            var entity = await ProxyConfigRepository.GetAsync(id);
+
+            return ObjectMapper.Map<ProxyConfig, ProxyConfigDto>(entity);
+        }
+
+        [Authorize(YarpManagementPermissions.ProxyConfigs.Create)]
         public virtual async Task CreateAsync(CreateProxyConfigDto input)
         {
             var config = await ProxyConfigRepository.FindAsync(x => x.Name == input.Name);
-            if (config != null && config.Value?.GetHashCode() != input.Value.GetHashCode())
+            if (config != null && (config.Value?.GetHashCode() != input.Value.GetHashCode()))
             {
-                await ProxyConfigRepository.DeleteAsync(config);
+                return;
             }
 
+            await ProxyConfigRepository.DeleteAsync(config);
             long count = 0;
             using (DataFilter.Disable<ISoftDelete>())
             {
@@ -54,18 +63,20 @@ namespace Taitans.YarpManagement
 
         }
 
+        [Authorize(YarpManagementPermissions.ProxyConfigs.ViewChangeHistory)]
         public virtual async Task<List<ProxyConfigHistoryDto>> GetHistoryListAsync(GetHistoryInput input)
         {
             using (DataFilter.Disable<ISoftDelete>())
             {
                 List<ProxyConfigHistoryDto> historyDtos = new();
 
-                var list = await ProxyConfigRepository.GetListByNameAsync(input.Name);
+                var list = (await ProxyConfigRepository.GetListByNameAsync(input.Name)).OrderBy(x => x.IsDeleted);
 
                 foreach (var history in list)
                 {
                     historyDtos.Add(new ProxyConfigHistoryDto
                     {
+                        Id = history.Id,
                         CreateTime = history.CreationTime,
                         IsCurrent = !history.IsDeleted,
                         Value = history.Value,
@@ -77,6 +88,7 @@ namespace Taitans.YarpManagement
             }
         }
 
+        [Authorize(YarpManagementPermissions.ProxyConfigs.RollBack)]
         public virtual async Task RollBackAsync(Guid id)
         {
             using (DataFilter.Disable<ISoftDelete>())
@@ -95,6 +107,7 @@ namespace Taitans.YarpManagement
             }
         }
 
+        [Authorize(YarpManagementPermissions.ProxyConfigs.Reload)]
         public virtual async Task ReloadAsync(Guid id)
         {
             var config = await ProxyConfigRepository.GetAsync(id);

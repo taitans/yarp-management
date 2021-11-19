@@ -14,5 +14,6 @@ namespace Taitans.YarpManagement
         Task CreateAsync(CreateProxyConfigDto input);
         Task ReloadAsync(Guid id);
         Task<PagedResultDto<ProxyConfigDto>> GetListAsync(GetProxyConfigsInput input);
+        Task<ProxyConfigDto> GetAsync(Guid id);
     }
 }
