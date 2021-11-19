@@ -45,7 +45,7 @@ namespace Taitans.YarpManagement
         public virtual async Task CreateAsync(CreateProxyConfigDto input)
         {
             var config = await ProxyConfigRepository.FindAsync(x => x.Name == input.Name);
-            if (config != null && (config.Value?.GetHashCode() != input.Value.GetHashCode()))
+            if (config != null && (config.Value?.GetHashCode() == input.Value.GetHashCode()))
             {
                 return;
             }
