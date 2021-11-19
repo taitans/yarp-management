@@ -9,9 +9,9 @@ using Volo.Abp.Application.Dtos;
 namespace Taitans.YarpManagement
 {
     [RemoteService(Name = YarpManagementRemoteServiceConsts.RemoteServiceName)]
-    [Area("YarpManagement")]
-    [ControllerName("Yarp")]
-    [Route("/api/yarp/proxy-config")]
+    [Area("yarpManagement")]
+    [ControllerName("ProxyConfig")]
+    [Route("/api/yarp-management/proxy-config")]
     public class ProxyConfigController : YarpManagementControllerBase, IProxyConfigAppService
     {
         private readonly IProxyConfigAppService _proxyConfigAppService;
@@ -51,5 +51,10 @@ namespace Taitans.YarpManagement
             return _proxyConfigAppService.ReloadAsync(id);
         }
 
+        [HttpGet("{id}")]
+        public Task<ProxyConfigDto> GetAsync(Guid id)
+        {
+            return _proxyConfigAppService.GetAsync(id);
+        }
     }
 }
