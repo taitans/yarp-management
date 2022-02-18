@@ -15,7 +15,7 @@ projects=(
 ) 
 commonPropsXml="${packFolder}/common.props"
 [ "$VERSION" == "latest" ] && VERSION=
-[ ! -n "$VERSION" ] && VERSION=`grep -E -o -e '<Version>.+</Version>' $commonPropsXml | sed 's/<Version>//g'|sed 's/<\/Version>//g'|awk '{print $1}'`-preview`date +%Y%m%d%H%M%S`
+[ ! -n "$VERSION" ] && VERSION=`grep -E -o -e '<Version>.+</Version>' $commonPropsXml | sed 's/<Version>//g'|sed 's/<\/Version>//g'|awk '{print $1}'`
 for  project in ${projects[@]};do 
     projectFolder="${rootFolder}${project}"
     cd $projectFolder
