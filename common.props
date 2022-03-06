@@ -9,7 +9,7 @@
   <PropertyGroup>
 
     <!-- Microsoft.NET.Test.Sdk https://www.nuget.org/packages/Microsoft.NET.Test.Sdk -->
-    <MicrosoftNETTestSdkPackageVersion>17.0.0</MicrosoftNETTestSdkPackageVersion>
+    <MicrosoftNETTestSdkPackageVersion>17.1.0</MicrosoftNETTestSdkPackageVersion>
 
   </PropertyGroup>
 
