@@ -2,11 +2,17 @@
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
     <Version>0.1.0</Version>
-    <NoWarn>$(NoWarn);CS1591</NoWarn>
-    <AbpProjectType>module</AbpProjectType>
+    <NoWarn>$(NoWarn);CS1591;CS0436</NoWarn>
+    <AbpProjectType>module</AbpProjectType> 
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/taitans/yarp-management</RepositoryUrl>
   </PropertyGroup>
 
   <PropertyGroup>
+
+    <!-- All Microsoft packages -->
+    <MicrosoftPackageVersion>6.0.3</MicrosoftPackageVersion>
 
     <!-- Microsoft.NET.Test.Sdk https://www.nuget.org/packages/Microsoft.NET.Test.Sdk -->
     <MicrosoftNETTestSdkPackageVersion>17.1.0</MicrosoftNETTestSdkPackageVersion>
@@ -15,10 +21,6 @@
 
   <ItemGroup>
     <None Include="..\..\8080.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-    <None Include="..\..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
