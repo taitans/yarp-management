@@ -3,10 +3,15 @@
     <LangVersion>latest</LangVersion>
     <Version>1.0.0</Version>
     <NoWarn>$(NoWarn);CS1591;CS0436</NoWarn>
-    <AbpProjectType>module</AbpProjectType> 
+    <AbpProjectType>module</AbpProjectType>
+    <PackageProjectUrl>http://taitans.com/</PackageProjectUrl>
+    <PackageIconUrl>http://taitans.com/assets/taitans-nupkg.png</PackageIconUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/taitans/yarp-management</RepositoryUrl>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- Include symbol files (*.pdb) in the built .nupkg -->
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -20,10 +25,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\8080.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.0-beta-20204-02">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

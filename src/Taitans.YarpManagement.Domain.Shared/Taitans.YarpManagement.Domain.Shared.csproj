@@ -6,8 +6,6 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace />
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
-    <PackageIcon>8080.png</PackageIcon>
-    <PackageIconUrl />
   </PropertyGroup>
 
   <ItemGroup>

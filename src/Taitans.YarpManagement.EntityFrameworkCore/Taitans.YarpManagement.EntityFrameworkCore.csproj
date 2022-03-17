@@ -5,8 +5,6 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace />
-    <PackageIcon>8080.png</PackageIcon>
-    <PackageIconUrl /> 
   </PropertyGroup>
 
   <ItemGroup>
