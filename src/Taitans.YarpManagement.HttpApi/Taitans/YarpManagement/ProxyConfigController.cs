@@ -28,7 +28,7 @@ namespace Taitans.YarpManagement
         }
 
         [HttpGet("historys")]
-        public Task<List<ProxyConfigHistoryDto>> GetHistoryListAsync(GetHistoryInput input)
+        public Task<PagedResultDto<ProxyConfigHistoryDto>> GetHistoryListAsync(GetHistoryInput input)
         {
             return _proxyConfigAppService.GetHistoryListAsync(input);
         }

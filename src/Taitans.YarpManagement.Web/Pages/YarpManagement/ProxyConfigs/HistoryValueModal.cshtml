@@ -1,0 +1,24 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@using Volo.Abp.Localization
+@using Volo.Abp.ObjectExtending
+@using Taitans.YarpManagement.Localization
+@using Taitans.YarpManagement.Web.Pages.YarpManagement.ProxyConfigs
+@using Volo.Abp.Data
+@model HistoryValueModalModel
+@inject IHtmlLocalizer<YarpManagementResource> L
+@inject IStringLocalizerFactory StringLocalizerFactory
+@{
+    Layout = null;
+}
+
+<abp-modal>
+    <abp-modal-header title="@L["Value"].Value"></abp-modal-header>
+    <abp-modal-body>
+        <abp-card>
+            <textarea rows="20" readonly>@Model.Value.Value</textarea>
+        </abp-card>
+    </abp-modal-body>
+</abp-modal>

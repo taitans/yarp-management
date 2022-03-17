@@ -9,7 +9,7 @@ namespace Taitans.YarpManagement
 {
     public interface IProxyConfigAppService : IApplicationService
     {
-        Task<List<ProxyConfigHistoryDto>> GetHistoryListAsync(GetHistoryInput input);
+        Task<PagedResultDto<ProxyConfigHistoryDto>> GetHistoryListAsync(GetHistoryInput input);
         Task RollBackAsync(Guid id);
         Task CreateAsync(CreateProxyConfigDto input);
         Task ReloadAsync(Guid id);

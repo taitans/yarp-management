@@ -1,0 +1,42 @@
+﻿@page
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout  
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Pages.Shared.Components.AbpPageToolbar
+@using Taitans.YarpManagement.Web.Navigation
+@using Taitans.YarpManagement.Web.Pages.YarpManagement.ProxyConfigs
+@model Taitans.YarpManagement.Web.Pages.YarpManagement.ProxyConfigs.IndexModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Taitans.YarpManagement.Localization
+@inject IHtmlLocalizer<YarpManagementResource> L
+
+
+@inject IPageLayout PageLayout
+@{  
+    PageLayout.Content.Title = L["Menu:YarpManagement"].Value;
+    PageLayout.Content.MenuItemName = YarpManagementMenuNames.GroupName;
+}
+
+@section scripts {
+    <abp-script-bundle name="@typeof(IndexModel).FullName">
+        <abp-script src="/client-proxies/yarpManagement-proxy.js" />
+        <abp-script src="/Pages/YarpManagement/ProxyConfigs/index.js"/>
+    </abp-script-bundle>
+}
+ 
+
+<abp-card id="ProxyConfigsWrapper">
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title>@L["ProxyConfig"]</abp-card-title>
+            </abp-column>
+            <abp-column size-md="_6" class="text-end">
+                @await Component.InvokeAsync(typeof(AbpPageToolbarViewComponent), new { pageName = typeof(IndexModel).FullName })
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-table striped-rows="true" class="nowrap"></abp-table>
+    </abp-card-body>
+</abp-card>
+
+ 

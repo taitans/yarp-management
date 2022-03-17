@@ -1,0 +1,130 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@using Volo.Abp.Localization
+@using Volo.Abp.ObjectExtending
+@using Taitans.YarpManagement.Localization
+@using Taitans.YarpManagement.Web.Pages.YarpManagement.ProxyConfigs
+@using Volo.Abp.Data
+@model ViewChangeHistoryModalModel
+@inject IHtmlLocalizer<YarpManagementResource> L
+@inject IStringLocalizerFactory StringLocalizerFactory
+@{
+    Layout = null;
+}
+
+<abp-modal id="HistoryModal" size="Large">
+    <abp-modal-header title="@L["ViewChangeHistory"].Value"></abp-modal-header>
+    <abp-modal-body>
+        <abp-card-body>
+            <abp-table id="HistoryTable" striped-rows="true"></abp-table>
+        </abp-card-body>
+
+    </abp-modal-body>
+</abp-modal>
+
+<script>
+    var l = abp.localization.getResource("YarpManagement");
+
+    var _proxyConfigAppService = window.taitans.yarpManagement.proxyConfig;
+
+    var _dataTable = null;
+
+    var _valueModal = new abp.ModalManager(
+        abp.appPath + 'YarpManagement/ProxyConfigs/HistoryValueModal'
+    );
+
+    abp.ui.extensions.entityActions.get('yarpManagement.proxyConfig.history').addContributor(
+        function (actionList) {
+            return actionList.addManyTail(
+                [
+                    {
+                        text: l('Value'),
+                        action: function (data) {
+                            _valueModal.open({
+                                id: data.record.id,
+                            });
+                        },
+                    },
+                    {
+                        text: l('RollBackToVersion'),
+                        visible: function (data) {
+                            if(!data.isCurrent)
+                                return true;
+                            return false;
+                        },
+                        confirmMessage: function (data) {
+                            return l(
+                                'ProxyConfigRollBackConfirmationMessage',
+                                data.record.version
+                            );
+                        },
+                        action: function (data) {
+                            _proxyConfigAppService.rollBack(data.record.id).then(function () {
+                                _dataTable.ajax.reload();
+                                abp.notify.success(l('DisplayName:RollBackSuccessfully'));
+                            });
+                        },
+                    },
+                ]
+            );
+        }
+    );
+
+    abp.ui.extensions.tableColumns.get('yarpManagement.proxyConfig.history').addContributor(
+        function (columnList) {
+            columnList.addManyTail(
+                [
+                    {
+                        title: l("Actions"),
+                        rowAction: {
+                            items: abp.ui.extensions.entityActions.get("yarpManagement.proxyConfig.history").actions.toArray()
+                        }
+                    },
+                    {
+                        title: l("DisplayName:CreateTime"),
+                        data: "createTime"
+                    },
+                    {
+                        title: l("Version"),
+                        data: "version",
+                        orderable: false,
+                        render: function (data, type, row) {
+                            var name = '<span>' + $.fn.dataTable.render.text().display(data) + '</span>'; //prevent against possible XSS
+                            if (row.isCurrent) {
+                                name +=
+                                    '<span class="badge rounded-pill bg-danger ms-1">' +
+                                    l('DisplayName:IsCurrent') +
+                                    '</span>';
+                            }
+
+                            return name;
+                        },
+                    },
+                ]
+            );
+        },
+        0 //adds as the first contributor
+    );
+
+    $(function () {
+        _dataTable = $('#HistoryTable').DataTable(
+            abp.libs.datatables.normalizeConfiguration({
+                processing: true,
+                searching: false,
+                paging: false,
+                sorting: false,
+                scrollX: true,
+                serverSide: true,
+                ajax: abp.libs.datatables.createAjax(_proxyConfigAppService.getHistoryList, { name: '@Model.HistoryInfoModel.Name'}),
+                columnDefs: abp.ui.extensions.tableColumns.get('yarpManagement.proxyConfig.history').columns.toArray(),
+            })
+        );
+
+        _valueModal.onResult(function () {
+            _dataTable.ajax.reload();
+        });
+
+    });
+</script>

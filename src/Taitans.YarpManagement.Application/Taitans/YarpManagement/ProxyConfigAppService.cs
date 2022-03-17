@@ -50,7 +50,7 @@ namespace Taitans.YarpManagement
                 return;
             }
             else if (config != null)
-            { 
+            {
                 await ProxyConfigRepository.DeleteAsync(config);
             }
 
@@ -67,13 +67,16 @@ namespace Taitans.YarpManagement
         }
 
         [Authorize(YarpManagementPermissions.ProxyConfigs.ViewChangeHistory)]
-        public virtual async Task<List<ProxyConfigHistoryDto>> GetHistoryListAsync(GetHistoryInput input)
+        public virtual async Task<PagedResultDto<ProxyConfigHistoryDto>> GetHistoryListAsync(GetHistoryInput input)
         {
             using (DataFilter.Disable<ISoftDelete>())
             {
-                List<ProxyConfigHistoryDto> historyDtos = new();
 
-                var list = (await ProxyConfigRepository.GetListByNameAsync(input.Name)).OrderBy(x => x.IsDeleted);
+                var count = await ProxyConfigRepository.GetCountByNameAsync(input.Name);
+
+                var list = (await ProxyConfigRepository.GetListAsync(sorting: nameof(ProxyConfig.IsDeleted) + " asc", name: input.Name));
+
+                List<ProxyConfigHistoryDto> historyDtos = new();
 
                 foreach (var history in list)
                 {
@@ -87,7 +90,9 @@ namespace Taitans.YarpManagement
                     });
                 }
 
-                return historyDtos;
+                return new PagedResultDto<ProxyConfigHistoryDto>(
+                    count,
+                    ObjectMapper.Map<List<ProxyConfigHistoryDto>, List<ProxyConfigHistoryDto>>(historyDtos));
             }
         }
 

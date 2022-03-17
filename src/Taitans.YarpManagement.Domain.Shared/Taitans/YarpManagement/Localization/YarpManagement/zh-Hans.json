@@ -5,6 +5,7 @@
     "Version": "版本",
     "Value": "值",
     "Reload": "重载",
+    "ProxyConfigs": "代理",
     "NewProxyConfig": "新代理",
     "History": "记录",
     "RollBackToVersion": "回滚此版本",
