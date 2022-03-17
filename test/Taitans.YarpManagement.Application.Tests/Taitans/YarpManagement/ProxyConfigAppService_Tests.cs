@@ -45,9 +45,9 @@ namespace Taitans.YarpManagement
         public async Task GetHistoryListAsync()
         {
             var historys = await _proxyConfigAppService.GetHistoryListAsync(new Dtos.GetHistoryInput { Name = YarpManagementTestData.Name });
-            historys.Count.ShouldBe(2);
-            historys.ShouldContain(x => x.IsCurrent && x.Value == YarpManagementTestData.CurrentValue);
-            historys.ShouldContain(x => !x.IsCurrent && x.Value == YarpManagementTestData.RollBackValue);
+            historys.Items.Count.ShouldBe(2);
+            historys.Items.ShouldContain(x => x.IsCurrent && x.Value == YarpManagementTestData.CurrentValue);
+            historys.Items.ShouldContain(x => !x.IsCurrent && x.Value == YarpManagementTestData.RollBackValue);
         }
 
         [Fact]
