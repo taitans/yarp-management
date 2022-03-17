@@ -12,6 +12,7 @@ projects=(
     "src/Taitans.YarpManagement.HttpApi"
     "src/Taitans.YarpManagement.HttpApi.Client" 
     "src/Taitans.YarpManagement.MongoDB"
+    "src/Taitans.YarpManagement.Web"
 ) 
 commonPropsXml="${packFolder}/common.props"
 [ "$VERSION" == "latest" ] && VERSION=
