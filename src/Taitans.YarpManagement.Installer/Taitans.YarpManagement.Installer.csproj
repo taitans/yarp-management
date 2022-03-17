@@ -8,8 +8,7 @@
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
     <RootNamespace />
     <PackageIcon>8080.png</PackageIcon>
-    <PackageIconUrl />
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageIconUrl /> 
   </PropertyGroup>
 
   <ItemGroup>
