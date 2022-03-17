@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Taitans.YarpManagementDemo</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Taitans.YarpManagementDemo.Application.Contracts\Taitans.YarpManagementDemo.Application.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\src\Taitans.YarpManagement.HttpApi.Client\Taitans.YarpManagement.HttpApi.Client.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Account.HttpApi.Client" Version="5.1.4" />
+    <PackageReference Include="Volo.Abp.Identity.HttpApi.Client" Version="5.1.4" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.HttpApi.Client" Version="5.1.4" />
+    <PackageReference Include="Volo.Abp.TenantManagement.HttpApi.Client" Version="5.1.4" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.HttpApi.Client" Version="5.1.4" />
+    <PackageReference Include="Volo.Abp.SettingManagement.HttpApi.Client" Version="5.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="**\*generate-proxy.json" />
+    <Content Remove="**\*generate-proxy.json" />
+  </ItemGroup>
+
+</Project>

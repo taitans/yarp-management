@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>Taitans.YarpManagementDemo</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Taitans.YarpManagementDemo.EntityFrameworkCore\Taitans.YarpManagementDemo.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\Taitans.YarpManagementDemo.TestBase\Taitans.YarpManagementDemo.TestBase.csproj" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore.Sqlite" Version="5.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+  </ItemGroup>
+
+</Project>
