@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Yarp.ReverseProxy" Version="1.0.0" />
-    <PackageReference Include="Volo.Abp.Ddd.Domain" Version="5.1.4" />
+    <PackageReference Include="Volo.Abp.Ddd.Domain" Version="5.2.0" />
     <ProjectReference Include="..\Taitans.YarpManagement.Domain.Shared\Taitans.YarpManagement.Domain.Shared.csproj" />
   </ItemGroup>
 
