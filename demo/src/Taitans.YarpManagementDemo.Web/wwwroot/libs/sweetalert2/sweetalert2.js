@@ -1,5 +1,5 @@
 /*!
-* sweetalert2 v11.3.3
+* sweetalert2 v11.4.8
 * Released under the MIT License.
 */
 (function (global, factory) {
@@ -27,27 +27,28 @@
   };
   /**
    * Capitalize the first letter of a string
-   * @param str
+   * @param {string} str
+   * @returns {string}
    */
 
   const capitalizeFirstLetter = str => str.charAt(0).toUpperCase() + str.slice(1);
   /**
-   * Convert NodeList to Array
-   * @param nodeList
+   * @param {NodeList | HTMLCollection | NamedNodeMap} nodeList
+   * @returns {array}
    */
 
   const toArray = nodeList => Array.prototype.slice.call(nodeList);
   /**
-   * Standardise console warnings
-   * @param message
+   * Standardize console warnings
+   * @param {string | array} message
    */
 
   const warn = message => {
     console.warn("".concat(consolePrefix, " ").concat(typeof message === 'object' ? message.join(' ') : message));
   };
   /**
-   * Standardise console errors
-   * @param message
+   * Standardize console errors
+   * @param {string} message
    */
 
   const error = message => {
@@ -62,7 +63,7 @@
   const previousWarnOnceMessages = [];
   /**
    * Show a console warning, but only if it hasn't already been shown
-   * @param message
+   * @param {string} message
    */
 
   const warnOnce = message => {
@@ -296,12 +297,12 @@
   const getFocusableElements = () => {
     const focusableElementsWithTabindex = toArray(getPopup().querySelectorAll('[tabindex]:not([tabindex="-1"]):not([tabindex="0"])')) // sort according to tabindex
     .sort((a, b) => {
-      a = parseInt(a.getAttribute('tabindex'));
-      b = parseInt(b.getAttribute('tabindex'));
+      const tabindexA = parseInt(a.getAttribute('tabindex'));
+      const tabindexB = parseInt(b.getAttribute('tabindex'));
 
-      if (a > b) {
+      if (tabindexA > tabindexB) {
         return 1;
-      } else if (a < b) {
+      } else if (tabindexA < tabindexB) {
         return -1;
       }
 
@@ -311,7 +312,7 @@
     return uniqueArray(focusableElementsWithTabindex.concat(otherFocusableElements)).filter(el => isVisible(el));
   };
   const isModal = () => {
-    return !hasClass(document.body, swalClasses['toast-shown']) && !hasClass(document.body, swalClasses['no-backdrop']);
+    return hasClass(document.body, swalClasses.shown) && !hasClass(document.body, swalClasses['toast-shown']) && !hasClass(document.body, swalClasses['no-backdrop']);
   };
   const isToast = () => {
     return getPopup() && hasClass(getPopup(), swalClasses.toast);
@@ -569,7 +570,11 @@
     timerProgressBar.style.width = "".concat(timerProgressBarPercent, "%");
   };
 
-  // Detect Node env
+  /**
+   * Detect Node env
+   *
+   * @returns {boolean}
+   */
   const isNodeEnv = () => typeof window === 'undefined' || typeof document === 'undefined';
 
   const RESTORE_FOCUS_TIMEOUT = 100;
@@ -694,22 +699,34 @@
     addInputChangeListeners();
   };
 
+  /**
+   * @param {HTMLElement | object | string} param
+   * @param {HTMLElement} target
+   */
+
   const parseHtmlToContainer = (param, target) => {
     // DOM element
     if (param instanceof HTMLElement) {
-      target.appendChild(param); // Object
-    } else if (typeof param === 'object') {
-      handleObject(param, target); // Plain string
-    } else if (param) {
+      target.appendChild(param);
+    } // Object
+    else if (typeof param === 'object') {
+      handleObject(param, target);
+    } // Plain string
+    else if (param) {
       setInnerHtml(target, param);
     }
   };
+  /**
+   * @param {object} param
+   * @param {HTMLElement} target
+   */
 
   const handleObject = (param, target) => {
     // JQuery element(s)
     if (param.jquery) {
-      handleJqueryElem(target, param); // For other objects use their string representation
-    } else {
+      handleJqueryElem(target, param);
+    } // For other objects use their string representation
+    else {
       setInnerHtml(target, param.toString());
     }
   };
@@ -737,8 +754,9 @@
     const testEl = document.createElement('div');
     const transEndEventNames = {
       WebkitAnimation: 'webkitAnimationEnd',
-      OAnimation: 'oAnimationEnd oanimationend',
-      animation: 'animationend'
+      // Chrome, Safari and Opera
+      animation: 'animationend' // Standard syntax
+
     };
 
     for (const i in transEndEventNames) {
@@ -1060,12 +1078,12 @@
     setInputPlaceholder(textarea, params);
     setInputLabel(textarea, textarea, params);
 
-    const getMargin = el => parseInt(window.getComputedStyle(el).marginLeft) + parseInt(window.getComputedStyle(el).marginRight);
+    const getMargin = el => parseInt(window.getComputedStyle(el).marginLeft) + parseInt(window.getComputedStyle(el).marginRight); // https://github.com/sweetalert2/sweetalert2/issues/2291
+
 
     setTimeout(() => {
-      // #2291
+      // https://github.com/sweetalert2/sweetalert2/issues/1699
       if ('MutationObserver' in window) {
-        // #1699
         const initialPopupWidth = parseInt(window.getComputedStyle(getPopup()).width);
 
         const textareaResizeHandler = () => {
@@ -1093,11 +1111,13 @@
 
     if (params.html) {
       parseHtmlToContainer(params.html, htmlContainer);
-      show(htmlContainer, 'block'); // Content as plain text
-    } else if (params.text) {
+      show(htmlContainer, 'block');
+    } // Content as plain text
+    else if (params.text) {
       htmlContainer.textContent = params.text;
-      show(htmlContainer, 'block'); // No content
-    } else {
+      show(htmlContainer, 'block');
+    } // No content
+    else {
       hide(htmlContainer);
     }
 
@@ -1164,13 +1184,13 @@
 
     setColor(icon, params); // Success icon background color
 
-    adjustSuccessIconBackgoundColor(); // Custom class
+    adjustSuccessIconBackgroundColor(); // Custom class
 
     applyCustomClass(icon, params, 'icon');
   }; // Adjust success icon background color to match the popup background color
 
 
-  const adjustSuccessIconBackgoundColor = () => {
+  const adjustSuccessIconBackgroundColor = () => {
     const popup = getPopup();
     const popupBackgroundColor = window.getComputedStyle(popup).getPropertyValue('background-color');
     const successIconParts = popup.querySelectorAll('[class^=swal2-success-circular-line], .swal2-success-fix');
@@ -1180,15 +1200,18 @@
     }
   };
 
+  const successIconHtml = "\n  <div class=\"swal2-success-circular-line-left\"></div>\n  <span class=\"swal2-success-line-tip\"></span> <span class=\"swal2-success-line-long\"></span>\n  <div class=\"swal2-success-ring\"></div> <div class=\"swal2-success-fix\"></div>\n  <div class=\"swal2-success-circular-line-right\"></div>\n";
+  const errorIconHtml = "\n  <span class=\"swal2-x-mark\">\n    <span class=\"swal2-x-mark-line-left\"></span>\n    <span class=\"swal2-x-mark-line-right\"></span>\n  </span>\n";
+
   const setContent = (icon, params) => {
     icon.textContent = '';
 
     if (params.iconHtml) {
       setInnerHtml(icon, iconContent(params.iconHtml));
     } else if (params.icon === 'success') {
-      setInnerHtml(icon, "\n      <div class=\"swal2-success-circular-line-left\"></div>\n      <span class=\"swal2-success-line-tip\"></span> <span class=\"swal2-success-line-long\"></span>\n      <div class=\"swal2-success-ring\"></div> <div class=\"swal2-success-fix\"></div>\n      <div class=\"swal2-success-circular-line-right\"></div>\n    ");
+      setInnerHtml(icon, successIconHtml);
     } else if (params.icon === 'error') {
-      setInnerHtml(icon, "\n      <span class=\"swal2-x-mark\">\n        <span class=\"swal2-x-mark-line-left\"></span>\n        <span class=\"swal2-x-mark-line-right\"></span>\n      </span>\n    ");
+      setInnerHtml(icon, errorIconHtml);
     } else {
       const defaultIconHtml = {
         question: '?',
@@ -1301,9 +1324,9 @@
   const renderPopup = (instance, params) => {
     const container = getContainer();
     const popup = getPopup(); // Width
+    // https://github.com/sweetalert2/sweetalert2/issues/2170
 
     if (params.toast) {
-      // #2170
       applyNumericalStyle(container, 'width', params.width);
       popup.style.width = '100%';
       popup.insertBefore(getLoader(), getIcon());
@@ -1414,32 +1437,39 @@
     if (!template) {
       return {};
     }
+    /** @type {DocumentFragment} */
+
 
     const templateContent = template.content;
     showWarningsForElements(templateContent);
     const result = Object.assign(getSwalParams(templateContent), getSwalButtons(templateContent), getSwalImage(templateContent), getSwalIcon(templateContent), getSwalInput(templateContent), getSwalStringParams(templateContent, swalStringParams));
     return result;
   };
+  /**
+   * @param {DocumentFragment} templateContent
+   */
 
   const getSwalParams = templateContent => {
     const result = {};
     toArray(templateContent.querySelectorAll('swal-param')).forEach(param => {
       showWarningsForAttributes(param, ['name', 'value']);
       const paramName = param.getAttribute('name');
-      let value = param.getAttribute('value');
+      const value = param.getAttribute('value');
 
       if (typeof defaultParams[paramName] === 'boolean' && value === 'false') {
-        value = false;
+        result[paramName] = false;
       }
 
       if (typeof defaultParams[paramName] === 'object') {
-        value = JSON.parse(value);
+        result[paramName] = JSON.parse(value);
       }
-
-      result[paramName] = value;
     });
     return result;
   };
+  /**
+   * @param {DocumentFragment} templateContent
+   */
+
 
   const getSwalButtons = templateContent => {
     const result = {};
@@ -1459,9 +1489,15 @@
     });
     return result;
   };
+  /**
+   * @param {DocumentFragment} templateContent
+   */
+
 
   const getSwalImage = templateContent => {
     const result = {};
+    /** @type {HTMLElement} */
+
     const image = templateContent.querySelector('swal-image');
 
     if (image) {
@@ -1486,9 +1522,15 @@
 
     return result;
   };
+  /**
+   * @param {DocumentFragment} templateContent
+   */
+
 
   const getSwalIcon = templateContent => {
     const result = {};
+    /** @type {HTMLElement} */
+
     const icon = templateContent.querySelector('swal-icon');
 
     if (icon) {
@@ -1507,9 +1549,15 @@
 
     return result;
   };
+  /**
+   * @param {DocumentFragment} templateContent
+   */
+
 
   const getSwalInput = templateContent => {
     const result = {};
+    /** @type {HTMLElement} */
+
     const input = templateContent.querySelector('swal-input');
 
     if (input) {
@@ -1543,12 +1591,19 @@
 
     return result;
   };
+  /**
+   * @param {DocumentFragment} templateContent
+   * @param {string[]} paramNames
+   */
+
 
   const getSwalStringParams = (templateContent, paramNames) => {
     const result = {};
 
     for (const i in paramNames) {
       const paramName = paramNames[i];
+      /** @type {HTMLElement} */
+
       const tag = templateContent.querySelector(paramName);
 
       if (tag) {
@@ -1559,10 +1614,14 @@
 
     return result;
   };
+  /**
+   * @param {DocumentFragment} templateContent
+   */
 
-  const showWarningsForElements = template => {
+
+  const showWarningsForElements = templateContent => {
     const allowedElements = swalStringParams.concat(['swal-param', 'swal-button', 'swal-image', 'swal-icon', 'swal-input', 'swal-input-option']);
-    toArray(template.children).forEach(el => {
+    toArray(templateContent.children).forEach(el => {
       const tagName = el.tagName.toLowerCase();
 
       if (allowedElements.indexOf(tagName) === -1) {
@@ -1570,6 +1629,11 @@
       }
     });
   };
+  /**
+   * @param {HTMLElement} el
+   * @param {string[]} allowedAttributes
+   */
+
 
   const showWarningsForAttributes = (el, allowedAttributes) => {
     toArray(el.attributes).forEach(attribute => {
@@ -1712,22 +1776,28 @@
   /* istanbul ignore file */
 
   const iOSfix = () => {
-    // @ts-ignore
-    const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream || navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
+    const iOS = // @ts-ignore
+    /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream || navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
 
     if (iOS && !hasClass(document.body, swalClasses.iosfix)) {
       const offset = document.body.scrollTop;
       document.body.style.top = "".concat(offset * -1, "px");
       addClass(document.body, swalClasses.iosfix);
       lockBodyScroll();
-      addBottomPaddingForTallPopups(); // #1948
+      addBottomPaddingForTallPopups();
     }
   };
+  /**
+   * https://github.com/sweetalert2/sweetalert2/issues/1948
+   */
 
   const addBottomPaddingForTallPopups = () => {
-    const safari = !navigator.userAgent.match(/(CriOS|FxiOS|EdgiOS|YaBrowser|UCBrowser)/i);
+    const ua = navigator.userAgent;
+    const iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i);
+    const webkit = !!ua.match(/WebKit/i);
+    const iOSSafari = iOS && webkit && !ua.match(/CriOS/i);
 
-    if (safari) {
+    if (iOSSafari) {
       const bottomPanelHeight = 44;
 
       if (getPopup().scrollHeight > window.innerHeight - bottomPanelHeight) {
@@ -1735,9 +1805,12 @@
       }
     }
   };
+  /**
+   * https://github.com/sweetalert2/sweetalert2/issues/1246
+   */
+
 
   const lockBodyScroll = () => {
-    // #1246
     const container = getContainer();
     let preventTouchMove;
 
@@ -1757,7 +1830,7 @@
     const target = event.target;
     const container = getContainer();
 
-    if (isStylys(event) || isZoom(event)) {
+    if (isStylus(event) || isZoom(event)) {
       return false;
     }
 
@@ -1774,14 +1847,26 @@
 
     return false;
   };
+  /**
+   * https://github.com/sweetalert2/sweetalert2/issues/1786
+   *
+   * @param {*} event
+   * @returns {boolean}
+   */
 
-  const isStylys = event => {
-    // #1786
+
+  const isStylus = event => {
     return event.touches && event.touches.length && event.touches[0].touchType === 'stylus';
   };
+  /**
+   * https://github.com/sweetalert2/sweetalert2/issues/1891
+   *
+   * @param {TouchEvent} event
+   * @returns {boolean}
+   */
+
 
   const isZoom = event => {
-    // #1891
     return event.touches && event.touches.length > 1;
   };
 
@@ -1868,7 +1953,7 @@
   };
 
   const addClasses$1 = (container, popup, params) => {
-    addClass(container, params.showClass.backdrop); // the workaround with setting/unsetting opacity is needed for #2019 and 2059
+    addClass(container, params.showClass.backdrop); // this workaround with opacity is needed for https://github.com/sweetalert2/sweetalert2/issues/2059
 
     popup.style.setProperty('opacity', '0', 'important');
     show(popup, 'grid');
@@ -2105,6 +2190,602 @@
     return inputValue && inputValue.toString() === optionValue.toString();
   };
 
+  /**
+   * Hides loader and shows back the button which was hidden by .showLoading()
+   */
+
+  function hideLoading() {
+    // do nothing if popup is closed
+    const innerParams = privateProps.innerParams.get(this);
+
+    if (!innerParams) {
+      return;
+    }
+
+    const domCache = privateProps.domCache.get(this);
+    hide(domCache.loader);
+
+    if (isToast()) {
+      if (innerParams.icon) {
+        show(getIcon());
+      }
+    } else {
+      showRelatedButton(domCache);
+    }
+
+    removeClass([domCache.popup, domCache.actions], swalClasses.loading);
+    domCache.popup.removeAttribute('aria-busy');
+    domCache.popup.removeAttribute('data-loading');
+    domCache.confirmButton.disabled = false;
+    domCache.denyButton.disabled = false;
+    domCache.cancelButton.disabled = false;
+  }
+
+  const showRelatedButton = domCache => {
+    const buttonToReplace = domCache.popup.getElementsByClassName(domCache.loader.getAttribute('data-button-to-replace'));
+
+    if (buttonToReplace.length) {
+      show(buttonToReplace[0], 'inline-block');
+    } else if (allButtonsAreHidden()) {
+      hide(domCache.actions);
+    }
+  };
+
+  /**
+   * Gets the input DOM node, this method works with input parameter.
+   * @returns {HTMLElement | null}
+   */
+
+  function getInput$1(instance) {
+    const innerParams = privateProps.innerParams.get(instance || this);
+    const domCache = privateProps.domCache.get(instance || this);
+
+    if (!domCache) {
+      return null;
+    }
+
+    return getInput(domCache.popup, innerParams.input);
+  }
+
+  /**
+   * This module contains `WeakMap`s for each effectively-"private  property" that a `Swal` has.
+   * For example, to set the private property "foo" of `this` to "bar", you can `privateProps.foo.set(this, 'bar')`
+   * This is the approach that Babel will probably take to implement private methods/fields
+   *   https://github.com/tc39/proposal-private-methods
+   *   https://github.com/babel/babel/pull/7555
+   * Once we have the changes from that PR in Babel, and our core class fits reasonable in *one module*
+   *   then we can use that language feature.
+   */
+  var privateMethods = {
+    swalPromiseResolve: new WeakMap(),
+    swalPromiseReject: new WeakMap()
+  };
+
+  /*
+   * Global function to determine if SweetAlert2 popup is shown
+   */
+
+  const isVisible$1 = () => {
+    return isVisible(getPopup());
+  };
+  /*
+   * Global function to click 'Confirm' button
+   */
+
+  const clickConfirm = () => getConfirmButton() && getConfirmButton().click();
+  /*
+   * Global function to click 'Deny' button
+   */
+
+  const clickDeny = () => getDenyButton() && getDenyButton().click();
+  /*
+   * Global function to click 'Cancel' button
+   */
+
+  const clickCancel = () => getCancelButton() && getCancelButton().click();
+
+  const removeKeydownHandler = globalState => {
+    if (globalState.keydownTarget && globalState.keydownHandlerAdded) {
+      globalState.keydownTarget.removeEventListener('keydown', globalState.keydownHandler, {
+        capture: globalState.keydownListenerCapture
+      });
+      globalState.keydownHandlerAdded = false;
+    }
+  };
+  const addKeydownHandler = (instance, globalState, innerParams, dismissWith) => {
+    removeKeydownHandler(globalState);
+
+    if (!innerParams.toast) {
+      globalState.keydownHandler = e => keydownHandler(instance, e, dismissWith);
+
+      globalState.keydownTarget = innerParams.keydownListenerCapture ? window : getPopup();
+      globalState.keydownListenerCapture = innerParams.keydownListenerCapture;
+      globalState.keydownTarget.addEventListener('keydown', globalState.keydownHandler, {
+        capture: globalState.keydownListenerCapture
+      });
+      globalState.keydownHandlerAdded = true;
+    }
+  }; // Focus handling
+
+  const setFocus = (innerParams, index, increment) => {
+    const focusableElements = getFocusableElements(); // search for visible elements and select the next possible match
+
+    if (focusableElements.length) {
+      index = index + increment; // rollover to first item
+
+      if (index === focusableElements.length) {
+        index = 0; // go to last item
+      } else if (index === -1) {
+        index = focusableElements.length - 1;
+      }
+
+      return focusableElements[index].focus();
+    } // no visible focusable elements, focus the popup
+
+
+    getPopup().focus();
+  };
+  const arrowKeysNextButton = ['ArrowRight', 'ArrowDown'];
+  const arrowKeysPreviousButton = ['ArrowLeft', 'ArrowUp'];
+
+  const keydownHandler = (instance, e, dismissWith) => {
+    const innerParams = privateProps.innerParams.get(instance);
+
+    if (!innerParams) {
+      return; // This instance has already been destroyed
+    } // Ignore keydown during IME composition
+    // https://developer.mozilla.org/en-US/docs/Web/API/Document/keydown_event#ignoring_keydown_during_ime_composition
+    // https://github.com/sweetalert2/sweetalert2/issues/720
+    // https://github.com/sweetalert2/sweetalert2/issues/2406
+
+
+    if (e.isComposing || e.keyCode === 229) {
+      return;
+    }
+
+    if (innerParams.stopKeydownPropagation) {
+      e.stopPropagation();
+    } // ENTER
+
+
+    if (e.key === 'Enter') {
+      handleEnter(instance, e, innerParams);
+    } // TAB
+    else if (e.key === 'Tab') {
+      handleTab(e, innerParams);
+    } // ARROWS - switch focus between buttons
+    else if ([...arrowKeysNextButton, ...arrowKeysPreviousButton].includes(e.key)) {
+      handleArrows(e.key);
+    } // ESC
+    else if (e.key === 'Escape') {
+      handleEsc(e, innerParams, dismissWith);
+    }
+  };
+
+  const handleEnter = (instance, e, innerParams) => {
+    // https://github.com/sweetalert2/sweetalert2/issues/2386
+    if (!callIfFunction(innerParams.allowEnterKey)) {
+      return;
+    }
+
+    if (e.target && instance.getInput() && e.target.outerHTML === instance.getInput().outerHTML) {
+      if (['textarea', 'file'].includes(innerParams.input)) {
+        return; // do not submit
+      }
+
+      clickConfirm();
+      e.preventDefault();
+    }
+  };
+
+  const handleTab = (e, innerParams) => {
+    const targetElement = e.target;
+    const focusableElements = getFocusableElements();
+    let btnIndex = -1;
+
+    for (let i = 0; i < focusableElements.length; i++) {
+      if (targetElement === focusableElements[i]) {
+        btnIndex = i;
+        break;
+      }
+    } // Cycle to the next button
+
+
+    if (!e.shiftKey) {
+      setFocus(innerParams, btnIndex, 1);
+    } // Cycle to the prev button
+    else {
+      setFocus(innerParams, btnIndex, -1);
+    }
+
+    e.stopPropagation();
+    e.preventDefault();
+  };
+
+  const handleArrows = key => {
+    const confirmButton = getConfirmButton();
+    const denyButton = getDenyButton();
+    const cancelButton = getCancelButton();
+
+    if (![confirmButton, denyButton, cancelButton].includes(document.activeElement)) {
+      return;
+    }
+
+    const sibling = arrowKeysNextButton.includes(key) ? 'nextElementSibling' : 'previousElementSibling';
+    let buttonToFocus = document.activeElement;
+
+    for (let i = 0; i < getActions().children.length; i++) {
+      buttonToFocus = buttonToFocus[sibling];
+
+      if (!buttonToFocus) {
+        return;
+      }
+
+      if (isVisible(buttonToFocus) && buttonToFocus instanceof HTMLButtonElement) {
+        break;
+      }
+    }
+
+    if (buttonToFocus instanceof HTMLButtonElement) {
+      buttonToFocus.focus();
+    }
+  };
+
+  const handleEsc = (e, innerParams, dismissWith) => {
+    if (callIfFunction(innerParams.allowEscapeKey)) {
+      e.preventDefault();
+      dismissWith(DismissReason.esc);
+    }
+  };
+
+  /*
+   * Instance method to close sweetAlert
+   */
+
+  function removePopupAndResetState(instance, container, returnFocus, didClose) {
+    if (isToast()) {
+      triggerDidCloseAndDispose(instance, didClose);
+    } else {
+      restoreActiveElement(returnFocus).then(() => triggerDidCloseAndDispose(instance, didClose));
+      removeKeydownHandler(globalState);
+    }
+
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent); // workaround for #2088
+    // for some reason removing the container in Safari will scroll the document to bottom
+
+    if (isSafari) {
+      container.setAttribute('style', 'display:none !important');
+      container.removeAttribute('class');
+      container.innerHTML = '';
+    } else {
+      container.remove();
+    }
+
+    if (isModal()) {
+      undoScrollbar();
+      undoIOSfix();
+      unsetAriaHidden();
+    }
+
+    removeBodyClasses();
+  }
+
+  function removeBodyClasses() {
+    removeClass([document.documentElement, document.body], [swalClasses.shown, swalClasses['height-auto'], swalClasses['no-backdrop'], swalClasses['toast-shown']]);
+  }
+
+  function close(resolveValue) {
+    resolveValue = prepareResolveValue(resolveValue);
+    const swalPromiseResolve = privateMethods.swalPromiseResolve.get(this);
+    const didClose = triggerClosePopup(this);
+
+    if (this.isAwaitingPromise()) {
+      // A swal awaiting for a promise (after a click on Confirm or Deny) cannot be dismissed anymore #2335
+      if (!resolveValue.isDismissed) {
+        handleAwaitingPromise(this);
+        swalPromiseResolve(resolveValue);
+      }
+    } else if (didClose) {
+      // Resolve Swal promise
+      swalPromiseResolve(resolveValue);
+    }
+  }
+  function isAwaitingPromise() {
+    return !!privateProps.awaitingPromise.get(this);
+  }
+
+  const triggerClosePopup = instance => {
+    const popup = getPopup();
+
+    if (!popup) {
+      return false;
+    }
+
+    const innerParams = privateProps.innerParams.get(instance);
+
+    if (!innerParams || hasClass(popup, innerParams.hideClass.popup)) {
+      return false;
+    }
+
+    removeClass(popup, innerParams.showClass.popup);
+    addClass(popup, innerParams.hideClass.popup);
+    const backdrop = getContainer();
+    removeClass(backdrop, innerParams.showClass.backdrop);
+    addClass(backdrop, innerParams.hideClass.backdrop);
+    handlePopupAnimation(instance, popup, innerParams);
+    return true;
+  };
+
+  function rejectPromise(error) {
+    const rejectPromise = privateMethods.swalPromiseReject.get(this);
+    handleAwaitingPromise(this);
+
+    if (rejectPromise) {
+      // Reject Swal promise
+      rejectPromise(error);
+    }
+  }
+  const handleAwaitingPromise = instance => {
+    if (instance.isAwaitingPromise()) {
+      privateProps.awaitingPromise.delete(instance); // The instance might have been previously partly destroyed, we must resume the destroy process in this case #2335
+
+      if (!privateProps.innerParams.get(instance)) {
+        instance._destroy();
+      }
+    }
+  };
+
+  const prepareResolveValue = resolveValue => {
+    // When user calls Swal.close()
+    if (typeof resolveValue === 'undefined') {
+      return {
+        isConfirmed: false,
+        isDenied: false,
+        isDismissed: true
+      };
+    }
+
+    return Object.assign({
+      isConfirmed: false,
+      isDenied: false,
+      isDismissed: false
+    }, resolveValue);
+  };
+
+  const handlePopupAnimation = (instance, popup, innerParams) => {
+    const container = getContainer(); // If animation is supported, animate
+
+    const animationIsSupported = animationEndEvent && hasCssAnimation(popup);
+
+    if (typeof innerParams.willClose === 'function') {
+      innerParams.willClose(popup);
+    }
+
+    if (animationIsSupported) {
+      animatePopup(instance, popup, container, innerParams.returnFocus, innerParams.didClose);
+    } else {
+      // Otherwise, remove immediately
+      removePopupAndResetState(instance, container, innerParams.returnFocus, innerParams.didClose);
+    }
+  };
+
+  const animatePopup = (instance, popup, container, returnFocus, didClose) => {
+    globalState.swalCloseEventFinishedCallback = removePopupAndResetState.bind(null, instance, container, returnFocus, didClose);
+    popup.addEventListener(animationEndEvent, function (e) {
+      if (e.target === popup) {
+        globalState.swalCloseEventFinishedCallback();
+        delete globalState.swalCloseEventFinishedCallback;
+      }
+    });
+  };
+
+  const triggerDidCloseAndDispose = (instance, didClose) => {
+    setTimeout(() => {
+      if (typeof didClose === 'function') {
+        didClose.bind(instance.params)();
+      }
+
+      instance._destroy();
+    });
+  };
+
+  function setButtonsDisabled(instance, buttons, disabled) {
+    const domCache = privateProps.domCache.get(instance);
+    buttons.forEach(button => {
+      domCache[button].disabled = disabled;
+    });
+  }
+
+  function setInputDisabled(input, disabled) {
+    if (!input) {
+      return false;
+    }
+
+    if (input.type === 'radio') {
+      const radiosContainer = input.parentNode.parentNode;
+      const radios = radiosContainer.querySelectorAll('input');
+
+      for (let i = 0; i < radios.length; i++) {
+        radios[i].disabled = disabled;
+      }
+    } else {
+      input.disabled = disabled;
+    }
+  }
+
+  function enableButtons() {
+    setButtonsDisabled(this, ['confirmButton', 'denyButton', 'cancelButton'], false);
+  }
+  function disableButtons() {
+    setButtonsDisabled(this, ['confirmButton', 'denyButton', 'cancelButton'], true);
+  }
+  function enableInput() {
+    return setInputDisabled(this.getInput(), false);
+  }
+  function disableInput() {
+    return setInputDisabled(this.getInput(), true);
+  }
+
+  function showValidationMessage(error) {
+    const domCache = privateProps.domCache.get(this);
+    const params = privateProps.innerParams.get(this);
+    setInnerHtml(domCache.validationMessage, error);
+    domCache.validationMessage.className = swalClasses['validation-message'];
+
+    if (params.customClass && params.customClass.validationMessage) {
+      addClass(domCache.validationMessage, params.customClass.validationMessage);
+    }
+
+    show(domCache.validationMessage);
+    const input = this.getInput();
+
+    if (input) {
+      input.setAttribute('aria-invalid', true);
+      input.setAttribute('aria-describedby', swalClasses['validation-message']);
+      focusInput(input);
+      addClass(input, swalClasses.inputerror);
+    }
+  } // Hide block with validation message
+
+  function resetValidationMessage$1() {
+    const domCache = privateProps.domCache.get(this);
+
+    if (domCache.validationMessage) {
+      hide(domCache.validationMessage);
+    }
+
+    const input = this.getInput();
+
+    if (input) {
+      input.removeAttribute('aria-invalid');
+      input.removeAttribute('aria-describedby');
+      removeClass(input, swalClasses.inputerror);
+    }
+  }
+
+  function getProgressSteps$1() {
+    const domCache = privateProps.domCache.get(this);
+    return domCache.progressSteps;
+  }
+
+  /**
+   * Updates popup parameters.
+   */
+
+  function update(params) {
+    const popup = getPopup();
+    const innerParams = privateProps.innerParams.get(this);
+
+    if (!popup || hasClass(popup, innerParams.hideClass.popup)) {
+      return warn("You're trying to update the closed or closing popup, that won't work. Use the update() method in preConfirm parameter or show a new popup.");
+    }
+
+    const validUpdatableParams = filterValidParams(params);
+    const updatedParams = Object.assign({}, innerParams, validUpdatableParams);
+    render(this, updatedParams);
+    privateProps.innerParams.set(this, updatedParams);
+    Object.defineProperties(this, {
+      params: {
+        value: Object.assign({}, this.params, params),
+        writable: false,
+        enumerable: true
+      }
+    });
+  }
+
+  const filterValidParams = params => {
+    const validUpdatableParams = {};
+    Object.keys(params).forEach(param => {
+      if (isUpdatableParameter(param)) {
+        validUpdatableParams[param] = params[param];
+      } else {
+        warn("Invalid parameter to update: \"".concat(param, "\". Updatable params are listed here: https://github.com/sweetalert2/sweetalert2/blob/master/src/utils/params.js\n\nIf you think this parameter should be updatable, request it here: https://github.com/sweetalert2/sweetalert2/issues/new?template=02_feature_request.md"));
+      }
+    });
+    return validUpdatableParams;
+  };
+
+  function _destroy() {
+    const domCache = privateProps.domCache.get(this);
+    const innerParams = privateProps.innerParams.get(this);
+
+    if (!innerParams) {
+      disposeWeakMaps(this); // The WeakMaps might have been partly destroyed, we must recall it to dispose any remaining WeakMaps #2335
+
+      return; // This instance has already been destroyed
+    } // Check if there is another Swal closing
+
+
+    if (domCache.popup && globalState.swalCloseEventFinishedCallback) {
+      globalState.swalCloseEventFinishedCallback();
+      delete globalState.swalCloseEventFinishedCallback;
+    } // Check if there is a swal disposal defer timer
+
+
+    if (globalState.deferDisposalTimer) {
+      clearTimeout(globalState.deferDisposalTimer);
+      delete globalState.deferDisposalTimer;
+    }
+
+    if (typeof innerParams.didDestroy === 'function') {
+      innerParams.didDestroy();
+    }
+
+    disposeSwal(this);
+  }
+
+  const disposeSwal = instance => {
+    disposeWeakMaps(instance); // Unset this.params so GC will dispose it (#1569)
+
+    delete instance.params; // Unset globalState props so GC will dispose globalState (#1569)
+
+    delete globalState.keydownHandler;
+    delete globalState.keydownTarget; // Unset currentInstance
+
+    delete globalState.currentInstance;
+  };
+
+  const disposeWeakMaps = instance => {
+    // If the current instance is awaiting a promise result, we keep the privateMethods to call them once the promise result is retrieved #2335
+    if (instance.isAwaitingPromise()) {
+      unsetWeakMaps(privateProps, instance);
+      privateProps.awaitingPromise.set(instance, true);
+    } else {
+      unsetWeakMaps(privateMethods, instance);
+      unsetWeakMaps(privateProps, instance);
+    }
+  };
+
+  const unsetWeakMaps = (obj, instance) => {
+    for (const i in obj) {
+      obj[i].delete(instance);
+    }
+  };
+
+
+
+  var instanceMethods = /*#__PURE__*/Object.freeze({
+    hideLoading: hideLoading,
+    disableLoading: hideLoading,
+    getInput: getInput$1,
+    close: close,
+    isAwaitingPromise: isAwaitingPromise,
+    rejectPromise: rejectPromise,
+    handleAwaitingPromise: handleAwaitingPromise,
+    closePopup: close,
+    closeModal: close,
+    closeToast: close,
+    enableButtons: enableButtons,
+    disableButtons: disableButtons,
+    enableInput: enableInput,
+    disableInput: disableInput,
+    showValidationMessage: showValidationMessage,
+    resetValidationMessage: resetValidationMessage$1,
+    getProgressSteps: getProgressSteps$1,
+    update: update,
+    _destroy: _destroy
+  });
+
   const handleConfirmButtonClick = instance => {
     const innerParams = privateProps.innerParams.get(instance);
     instance.disableButtons();
@@ -2134,6 +2815,11 @@
   /* 'confirm' | 'deny' */
   ) => {
     const innerParams = privateProps.innerParams.get(instance);
+
+    if (!innerParams.input) {
+      return error("The \"input\" parameter is needed to be set when using returnInputValueOn".concat(capitalizeFirstLetter(type)));
+    }
+
     const inputValue = getInputValue(instance, innerParams);
 
     if (innerParams.inputValidator) {
@@ -2176,12 +2862,13 @@
     }
 
     if (innerParams.preDeny) {
-      privateProps.awaitingPromise.set(instance || undefined, true); // Flagging the instance as awaiting a promise so it's own promise's reject/resolve methods doesnt get destroyed until the result from this preDeny's promise is received
+      privateProps.awaitingPromise.set(instance || undefined, true); // Flagging the instance as awaiting a promise so it's own promise's reject/resolve methods doesn't get destroyed until the result from this preDeny's promise is received
 
       const preDenyPromise = Promise.resolve().then(() => asPromise(innerParams.preDeny(value, innerParams.validationMessage)));
       preDenyPromise.then(preDenyValue => {
         if (preDenyValue === false) {
           instance.hideLoading();
+          handleAwaitingPromise(instance);
         } else {
           instance.closePopup({
             isDenied: true,
@@ -2217,12 +2904,13 @@
 
     if (innerParams.preConfirm) {
       instance.resetValidationMessage();
-      privateProps.awaitingPromise.set(instance || undefined, true); // Flagging the instance as awaiting a promise so it's own promise's reject/resolve methods doesnt get destroyed until the result from this preConfirm's promise is received
+      privateProps.awaitingPromise.set(instance || undefined, true); // Flagging the instance as awaiting a promise so it's own promise's reject/resolve methods doesn't get destroyed until the result from this preConfirm's promise is received
 
       const preConfirmPromise = Promise.resolve().then(() => asPromise(innerParams.preConfirm(value, innerParams.validationMessage)));
       preConfirmPromise.then(preConfirmValue => {
         if (isVisible(getValidationMessage()) || preConfirmValue === false) {
           instance.hideLoading();
+          handleAwaitingPromise(instance);
         } else {
           succeedWith(instance, typeof preConfirmValue === 'undefined' ? value : preConfirmValue);
         }
@@ -2311,157 +2999,6 @@
     };
   };
 
-  /*
-   * Global function to determine if SweetAlert2 popup is shown
-   */
-
-  const isVisible$1 = () => {
-    return isVisible(getPopup());
-  };
-  /*
-   * Global function to click 'Confirm' button
-   */
-
-  const clickConfirm = () => getConfirmButton() && getConfirmButton().click();
-  /*
-   * Global function to click 'Deny' button
-   */
-
-  const clickDeny = () => getDenyButton() && getDenyButton().click();
-  /*
-   * Global function to click 'Cancel' button
-   */
-
-  const clickCancel = () => getCancelButton() && getCancelButton().click();
-
-  const addKeydownHandler = (instance, globalState, innerParams, dismissWith) => {
-    if (globalState.keydownTarget && globalState.keydownHandlerAdded) {
-      globalState.keydownTarget.removeEventListener('keydown', globalState.keydownHandler, {
-        capture: globalState.keydownListenerCapture
-      });
-      globalState.keydownHandlerAdded = false;
-    }
-
-    if (!innerParams.toast) {
-      globalState.keydownHandler = e => keydownHandler(instance, e, dismissWith);
-
-      globalState.keydownTarget = innerParams.keydownListenerCapture ? window : getPopup();
-      globalState.keydownListenerCapture = innerParams.keydownListenerCapture;
-      globalState.keydownTarget.addEventListener('keydown', globalState.keydownHandler, {
-        capture: globalState.keydownListenerCapture
-      });
-      globalState.keydownHandlerAdded = true;
-    }
-  }; // Focus handling
-
-  const setFocus = (innerParams, index, increment) => {
-    const focusableElements = getFocusableElements(); // search for visible elements and select the next possible match
-
-    if (focusableElements.length) {
-      index = index + increment; // rollover to first item
-
-      if (index === focusableElements.length) {
-        index = 0; // go to last item
-      } else if (index === -1) {
-        index = focusableElements.length - 1;
-      }
-
-      return focusableElements[index].focus();
-    } // no visible focusable elements, focus the popup
-
-
-    getPopup().focus();
-  };
-  const arrowKeysNextButton = ['ArrowRight', 'ArrowDown'];
-  const arrowKeysPreviousButton = ['ArrowLeft', 'ArrowUp'];
-
-  const keydownHandler = (instance, e, dismissWith) => {
-    const innerParams = privateProps.innerParams.get(instance);
-
-    if (!innerParams) {
-      return; // This instance has already been destroyed
-    }
-
-    if (innerParams.stopKeydownPropagation) {
-      e.stopPropagation();
-    } // ENTER
-
-
-    if (e.key === 'Enter') {
-      handleEnter(instance, e, innerParams); // TAB
-    } else if (e.key === 'Tab') {
-      handleTab(e, innerParams); // ARROWS - switch focus between buttons
-    } else if ([...arrowKeysNextButton, ...arrowKeysPreviousButton].includes(e.key)) {
-      handleArrows(e.key); // ESC
-    } else if (e.key === 'Escape') {
-      handleEsc(e, innerParams, dismissWith);
-    }
-  };
-
-  const handleEnter = (instance, e, innerParams) => {
-    // #720 #721
-    if (e.isComposing) {
-      return;
-    }
-
-    if (e.target && instance.getInput() && e.target.outerHTML === instance.getInput().outerHTML) {
-      if (['textarea', 'file'].includes(innerParams.input)) {
-        return; // do not submit
-      }
-
-      clickConfirm();
-      e.preventDefault();
-    }
-  };
-
-  const handleTab = (e, innerParams) => {
-    const targetElement = e.target;
-    const focusableElements = getFocusableElements();
-    let btnIndex = -1;
-
-    for (let i = 0; i < focusableElements.length; i++) {
-      if (targetElement === focusableElements[i]) {
-        btnIndex = i;
-        break;
-      }
-    }
-
-    if (!e.shiftKey) {
-      // Cycle to the next button
-      setFocus(innerParams, btnIndex, 1);
-    } else {
-      // Cycle to the prev button
-      setFocus(innerParams, btnIndex, -1);
-    }
-
-    e.stopPropagation();
-    e.preventDefault();
-  };
-
-  const handleArrows = key => {
-    const confirmButton = getConfirmButton();
-    const denyButton = getDenyButton();
-    const cancelButton = getCancelButton();
-
-    if (![confirmButton, denyButton, cancelButton].includes(document.activeElement)) {
-      return;
-    }
-
-    const sibling = arrowKeysNextButton.includes(key) ? 'nextElementSibling' : 'previousElementSibling';
-    const buttonToFocus = document.activeElement[sibling];
-
-    if (buttonToFocus instanceof HTMLElement) {
-      buttonToFocus.focus();
-    }
-  };
-
-  const handleEsc = (e, innerParams, dismissWith) => {
-    if (callIfFunction(innerParams.allowEscapeKey)) {
-      e.preventDefault();
-      dismissWith(DismissReason.esc);
-    }
-  };
-
   const isJqueryElement = elem => typeof elem === 'object' && elem.jquery;
 
   const isElement = elem => elem instanceof Element || isJqueryElement(elem);
@@ -2487,7 +3024,7 @@
   };
 
   function fire() {
-    const Swal = this;
+    const Swal = this; // eslint-disable-line @typescript-eslint/no-this-alias
 
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
@@ -2656,424 +3193,6 @@
     bindClickHandler: bindClickHandler
   });
 
-  /**
-   * Hides loader and shows back the button which was hidden by .showLoading()
-   */
-
-  function hideLoading() {
-    // do nothing if popup is closed
-    const innerParams = privateProps.innerParams.get(this);
-
-    if (!innerParams) {
-      return;
-    }
-
-    const domCache = privateProps.domCache.get(this);
-    hide(domCache.loader);
-
-    if (isToast()) {
-      if (innerParams.icon) {
-        show(getIcon());
-      }
-    } else {
-      showRelatedButton(domCache);
-    }
-
-    removeClass([domCache.popup, domCache.actions], swalClasses.loading);
-    domCache.popup.removeAttribute('aria-busy');
-    domCache.popup.removeAttribute('data-loading');
-    domCache.confirmButton.disabled = false;
-    domCache.denyButton.disabled = false;
-    domCache.cancelButton.disabled = false;
-  }
-
-  const showRelatedButton = domCache => {
-    const buttonToReplace = domCache.popup.getElementsByClassName(domCache.loader.getAttribute('data-button-to-replace'));
-
-    if (buttonToReplace.length) {
-      show(buttonToReplace[0], 'inline-block');
-    } else if (allButtonsAreHidden()) {
-      hide(domCache.actions);
-    }
-  };
-
-  /**
-   * Gets the input DOM node, this method works with input parameter.
-   * @returns {HTMLElement | null}
-   */
-
-  function getInput$1(instance) {
-    const innerParams = privateProps.innerParams.get(instance || this);
-    const domCache = privateProps.domCache.get(instance || this);
-
-    if (!domCache) {
-      return null;
-    }
-
-    return getInput(domCache.popup, innerParams.input);
-  }
-
-  /**
-   * This module contains `WeakMap`s for each effectively-"private  property" that a `Swal` has.
-   * For example, to set the private property "foo" of `this` to "bar", you can `privateProps.foo.set(this, 'bar')`
-   * This is the approach that Babel will probably take to implement private methods/fields
-   *   https://github.com/tc39/proposal-private-methods
-   *   https://github.com/babel/babel/pull/7555
-   * Once we have the changes from that PR in Babel, and our core class fits reasonable in *one module*
-   *   then we can use that language feature.
-   */
-  var privateMethods = {
-    swalPromiseResolve: new WeakMap(),
-    swalPromiseReject: new WeakMap()
-  };
-
-  /*
-   * Instance method to close sweetAlert
-   */
-
-  function removePopupAndResetState(instance, container, returnFocus, didClose) {
-    if (isToast()) {
-      triggerDidCloseAndDispose(instance, didClose);
-    } else {
-      restoreActiveElement(returnFocus).then(() => triggerDidCloseAndDispose(instance, didClose));
-      globalState.keydownTarget.removeEventListener('keydown', globalState.keydownHandler, {
-        capture: globalState.keydownListenerCapture
-      });
-      globalState.keydownHandlerAdded = false;
-    }
-
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent); // workaround for #2088
-    // for some reason removing the container in Safari will scroll the document to bottom
-
-    if (isSafari) {
-      container.setAttribute('style', 'display:none !important');
-      container.removeAttribute('class');
-      container.innerHTML = '';
-    } else {
-      container.remove();
-    }
-
-    if (isModal()) {
-      undoScrollbar();
-      undoIOSfix();
-      unsetAriaHidden();
-    }
-
-    removeBodyClasses();
-  }
-
-  function removeBodyClasses() {
-    removeClass([document.documentElement, document.body], [swalClasses.shown, swalClasses['height-auto'], swalClasses['no-backdrop'], swalClasses['toast-shown']]);
-  }
-
-  function close(resolveValue) {
-    resolveValue = prepareResolveValue(resolveValue);
-    const swalPromiseResolve = privateMethods.swalPromiseResolve.get(this);
-    const didClose = triggerClosePopup(this);
-
-    if (this.isAwaitingPromise()) {
-      // A swal awaiting for a promise (after a click on Confirm or Deny) cannot be dismissed anymore #2335
-      if (!resolveValue.isDismissed) {
-        handleAwaitingPromise(this);
-        swalPromiseResolve(resolveValue);
-      }
-    } else if (didClose) {
-      // Resolve Swal promise
-      swalPromiseResolve(resolveValue);
-    }
-  }
-  function isAwaitingPromise() {
-    return !!privateProps.awaitingPromise.get(this);
-  }
-
-  const triggerClosePopup = instance => {
-    const popup = getPopup();
-
-    if (!popup) {
-      return false;
-    }
-
-    const innerParams = privateProps.innerParams.get(instance);
-
-    if (!innerParams || hasClass(popup, innerParams.hideClass.popup)) {
-      return false;
-    }
-
-    removeClass(popup, innerParams.showClass.popup);
-    addClass(popup, innerParams.hideClass.popup);
-    const backdrop = getContainer();
-    removeClass(backdrop, innerParams.showClass.backdrop);
-    addClass(backdrop, innerParams.hideClass.backdrop);
-    handlePopupAnimation(instance, popup, innerParams);
-    return true;
-  };
-
-  function rejectPromise(error) {
-    const rejectPromise = privateMethods.swalPromiseReject.get(this);
-    handleAwaitingPromise(this);
-
-    if (rejectPromise) {
-      // Reject Swal promise
-      rejectPromise(error);
-    }
-  }
-
-  const handleAwaitingPromise = instance => {
-    if (instance.isAwaitingPromise()) {
-      privateProps.awaitingPromise.delete(instance); // The instance might have been previously partly destroyed, we must resume the destroy process in this case #2335
-
-      if (!privateProps.innerParams.get(instance)) {
-        instance._destroy();
-      }
-    }
-  };
-
-  const prepareResolveValue = resolveValue => {
-    // When user calls Swal.close()
-    if (typeof resolveValue === 'undefined') {
-      return {
-        isConfirmed: false,
-        isDenied: false,
-        isDismissed: true
-      };
-    }
-
-    return Object.assign({
-      isConfirmed: false,
-      isDenied: false,
-      isDismissed: false
-    }, resolveValue);
-  };
-
-  const handlePopupAnimation = (instance, popup, innerParams) => {
-    const container = getContainer(); // If animation is supported, animate
-
-    const animationIsSupported = animationEndEvent && hasCssAnimation(popup);
-
-    if (typeof innerParams.willClose === 'function') {
-      innerParams.willClose(popup);
-    }
-
-    if (animationIsSupported) {
-      animatePopup(instance, popup, container, innerParams.returnFocus, innerParams.didClose);
-    } else {
-      // Otherwise, remove immediately
-      removePopupAndResetState(instance, container, innerParams.returnFocus, innerParams.didClose);
-    }
-  };
-
-  const animatePopup = (instance, popup, container, returnFocus, didClose) => {
-    globalState.swalCloseEventFinishedCallback = removePopupAndResetState.bind(null, instance, container, returnFocus, didClose);
-    popup.addEventListener(animationEndEvent, function (e) {
-      if (e.target === popup) {
-        globalState.swalCloseEventFinishedCallback();
-        delete globalState.swalCloseEventFinishedCallback;
-      }
-    });
-  };
-
-  const triggerDidCloseAndDispose = (instance, didClose) => {
-    setTimeout(() => {
-      if (typeof didClose === 'function') {
-        didClose.bind(instance.params)();
-      }
-
-      instance._destroy();
-    });
-  };
-
-  function setButtonsDisabled(instance, buttons, disabled) {
-    const domCache = privateProps.domCache.get(instance);
-    buttons.forEach(button => {
-      domCache[button].disabled = disabled;
-    });
-  }
-
-  function setInputDisabled(input, disabled) {
-    if (!input) {
-      return false;
-    }
-
-    if (input.type === 'radio') {
-      const radiosContainer = input.parentNode.parentNode;
-      const radios = radiosContainer.querySelectorAll('input');
-
-      for (let i = 0; i < radios.length; i++) {
-        radios[i].disabled = disabled;
-      }
-    } else {
-      input.disabled = disabled;
-    }
-  }
-
-  function enableButtons() {
-    setButtonsDisabled(this, ['confirmButton', 'denyButton', 'cancelButton'], false);
-  }
-  function disableButtons() {
-    setButtonsDisabled(this, ['confirmButton', 'denyButton', 'cancelButton'], true);
-  }
-  function enableInput() {
-    return setInputDisabled(this.getInput(), false);
-  }
-  function disableInput() {
-    return setInputDisabled(this.getInput(), true);
-  }
-
-  function showValidationMessage(error) {
-    const domCache = privateProps.domCache.get(this);
-    const params = privateProps.innerParams.get(this);
-    setInnerHtml(domCache.validationMessage, error);
-    domCache.validationMessage.className = swalClasses['validation-message'];
-
-    if (params.customClass && params.customClass.validationMessage) {
-      addClass(domCache.validationMessage, params.customClass.validationMessage);
-    }
-
-    show(domCache.validationMessage);
-    const input = this.getInput();
-
-    if (input) {
-      input.setAttribute('aria-invalid', true);
-      input.setAttribute('aria-describedby', swalClasses['validation-message']);
-      focusInput(input);
-      addClass(input, swalClasses.inputerror);
-    }
-  } // Hide block with validation message
-
-  function resetValidationMessage$1() {
-    const domCache = privateProps.domCache.get(this);
-
-    if (domCache.validationMessage) {
-      hide(domCache.validationMessage);
-    }
-
-    const input = this.getInput();
-
-    if (input) {
-      input.removeAttribute('aria-invalid');
-      input.removeAttribute('aria-describedby');
-      removeClass(input, swalClasses.inputerror);
-    }
-  }
-
-  function getProgressSteps$1() {
-    const domCache = privateProps.domCache.get(this);
-    return domCache.progressSteps;
-  }
-
-  /**
-   * Updates popup parameters.
-   */
-
-  function update(params) {
-    const popup = getPopup();
-    const innerParams = privateProps.innerParams.get(this);
-
-    if (!popup || hasClass(popup, innerParams.hideClass.popup)) {
-      return warn("You're trying to update the closed or closing popup, that won't work. Use the update() method in preConfirm parameter or show a new popup.");
-    }
-
-    const validUpdatableParams = {}; // assign valid params from `params` to `defaults`
-
-    Object.keys(params).forEach(param => {
-      if (isUpdatableParameter(param)) {
-        validUpdatableParams[param] = params[param];
-      } else {
-        warn("Invalid parameter to update: \"".concat(param, "\". Updatable params are listed here: https://github.com/sweetalert2/sweetalert2/blob/master/src/utils/params.js\n\nIf you think this parameter should be updatable, request it here: https://github.com/sweetalert2/sweetalert2/issues/new?template=02_feature_request.md"));
-      }
-    });
-    const updatedParams = Object.assign({}, innerParams, validUpdatableParams);
-    render(this, updatedParams);
-    privateProps.innerParams.set(this, updatedParams);
-    Object.defineProperties(this, {
-      params: {
-        value: Object.assign({}, this.params, params),
-        writable: false,
-        enumerable: true
-      }
-    });
-  }
-
-  function _destroy() {
-    const domCache = privateProps.domCache.get(this);
-    const innerParams = privateProps.innerParams.get(this);
-
-    if (!innerParams) {
-      disposeWeakMaps(this); // The WeakMaps might have been partly destroyed, we must recall it to dispose any remaining weakmaps #2335
-
-      return; // This instance has already been destroyed
-    } // Check if there is another Swal closing
-
-
-    if (domCache.popup && globalState.swalCloseEventFinishedCallback) {
-      globalState.swalCloseEventFinishedCallback();
-      delete globalState.swalCloseEventFinishedCallback;
-    } // Check if there is a swal disposal defer timer
-
-
-    if (globalState.deferDisposalTimer) {
-      clearTimeout(globalState.deferDisposalTimer);
-      delete globalState.deferDisposalTimer;
-    }
-
-    if (typeof innerParams.didDestroy === 'function') {
-      innerParams.didDestroy();
-    }
-
-    disposeSwal(this);
-  }
-
-  const disposeSwal = instance => {
-    disposeWeakMaps(instance); // Unset this.params so GC will dispose it (#1569)
-
-    delete instance.params; // Unset globalState props so GC will dispose globalState (#1569)
-
-    delete globalState.keydownHandler;
-    delete globalState.keydownTarget; // Unset currentInstance
-
-    delete globalState.currentInstance;
-  };
-
-  const disposeWeakMaps = instance => {
-    // If the current instance is awaiting a promise result, we keep the privateMethods to call them once the promise result is retrieved #2335
-    if (instance.isAwaitingPromise()) {
-      unsetWeakMaps(privateProps, instance);
-      privateProps.awaitingPromise.set(instance, true);
-    } else {
-      unsetWeakMaps(privateMethods, instance);
-      unsetWeakMaps(privateProps, instance);
-    }
-  };
-
-  const unsetWeakMaps = (obj, instance) => {
-    for (const i in obj) {
-      obj[i].delete(instance);
-    }
-  };
-
-
-
-  var instanceMethods = /*#__PURE__*/Object.freeze({
-    hideLoading: hideLoading,
-    disableLoading: hideLoading,
-    getInput: getInput$1,
-    close: close,
-    isAwaitingPromise: isAwaitingPromise,
-    rejectPromise: rejectPromise,
-    closePopup: close,
-    closeModal: close,
-    closeToast: close,
-    enableButtons: enableButtons,
-    disableButtons: disableButtons,
-    enableInput: enableInput,
-    disableInput: disableInput,
-    showValidationMessage: showValidationMessage,
-    resetValidationMessage: resetValidationMessage$1,
-    getProgressSteps: getProgressSteps$1,
-    update: update,
-    _destroy: _destroy
-  });
-
   let currentInstance;
 
   class SweetAlert {
@@ -3219,6 +3338,7 @@
 
       if (innerParams.timerProgressBar) {
         show(timerProgressBar);
+        applyCustomClass(timerProgressBar, innerParams, 'timerProgressBar');
         setTimeout(() => {
           if (globalState$$1.timeout && globalState$$1.timeout.running) {
             // timer can be already stopped or unset at this point
@@ -3281,7 +3401,7 @@
     };
   });
   SweetAlert.DismissReason = DismissReason;
-  SweetAlert.version = '11.3.3';
+  SweetAlert.version = '11.4.8';
 
   const Swal = SweetAlert; // @ts-ignore
 

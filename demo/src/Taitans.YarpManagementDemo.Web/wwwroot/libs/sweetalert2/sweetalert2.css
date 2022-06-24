@@ -394,7 +394,6 @@
   bottom: 0;
   left: 0;
   grid-column: auto !important;
-  height: 0.25em;
   overflow: hidden;
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
