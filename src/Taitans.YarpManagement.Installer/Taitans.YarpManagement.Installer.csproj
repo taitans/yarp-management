@@ -10,8 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.Studio.ModuleInstaller" Version="5.3.0" />
-    <PackageReference Include="Volo.Abp.VirtualFileSystem" Version="5.3.0" />
+    <PackageReference Include="Volo.Abp.Studio.ModuleInstaller" Version="5.3.1" />
+    <PackageReference Include="Volo.Abp.VirtualFileSystem" Version="5.3.1" />
   </ItemGroup>
 
   <ItemGroup>
